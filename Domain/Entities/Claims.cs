@@ -20,5 +20,8 @@ namespace Domain.Entities
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
 
+        public Patients Patient { get; set; }
+        public ClaimImports ClaimImport { get; set; }
+
     }
 }

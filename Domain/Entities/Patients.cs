@@ -14,5 +14,9 @@ namespace Domain.Entities
         public DateOnly dob { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
+
+        public ICollection<Claims> Claims { get; set; } = new List<Claims>();
     }
+
+
 }

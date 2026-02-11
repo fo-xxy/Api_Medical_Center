@@ -1,35 +1,46 @@
-﻿using Infrastructure.Persistence;
+﻿using Application.DTOs;
+using Application.Interfaces;
+using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Application.Interfaces;
-using Application.DTOs;
 
 namespace Api.Controllers
 {
-        //Controlador usuarios 
+    //Controlador usuarios 
 
-        //Endpoint para registrar usuarios
-        [ApiController]
-        [Route("api/[controller]")]
-        public class AuthController : ControllerBase
+    //Endpoint para registrar usuarios
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            private readonly IAuthService _authService;
-
-            public AuthController(IAuthService authService)
-            {
-                _authService = authService;
-            }
-
-            [HttpPost("Register")]
-            public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
-            {
-                var result = await _authService.RegisterAsync(dto);
-
-                if (!result)
-                    return BadRequest("No se pudo completar el registro.");
-
-                return Ok(new { message = "Usuario registrado con éxito" });
-            }
+            _authService = authService;
         }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
+        {
+            var result = await _authService.RegisterAsync(dto);
+
+            if (!result)
+                return BadRequest("No se pudo completar el registro.");
+
+            return Ok(new { message = "Usuario registrado con éxito" });
+        }
+
+  
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+        {
+            var token = await _authService.LoginAsync(dto);
+            if (token == null)
+                return Unauthorized("Credenciales inválidas.");
+            return Ok(new { token });
+        }
+    }
 }
 

@@ -50,18 +50,20 @@ namespace Infrastructure.Persistence
             {
                 entity.HasKey(e => e.id);
 
-                entity.HasOne<Patients>()
-                        .WithMany()                
-                        .HasForeignKey(e => e.patient_id);
+                //Relación con Pacientes
+                entity.HasOne(e => e.Patient)
+                      .WithMany(p => p.Claims)
+                      .HasForeignKey(e => e.patient_id);
 
+                //Configuración de negocio
                 entity.HasIndex(e => e.claim_number).IsUnique();
-
                 entity.Property(e => e.amount).HasColumnType("decimal(18,2)");
 
-                entity.HasOne<ClaimImports>()
-                    .WithMany()
-                    .HasForeignKey(e => e.claim_import_id)
-                    .OnDelete(DeleteBehavior.Restrict);
+                //Relación con Importaciones
+                entity.HasOne(e => e.ClaimImport)
+                      .WithMany(i => i.Claims) 
+                      .HasForeignKey(e => e.claim_import_id)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
