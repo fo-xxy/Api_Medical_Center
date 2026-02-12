@@ -60,10 +60,10 @@ namespace Infrastructure.Persistence
                 entity.Property(e => e.amount).HasColumnType("decimal(18,2)");
 
                 //Relación con Importaciones
-                entity.HasOne(e => e.ClaimImport)
+               /* entity.HasOne(e => e.ClaimImport)
                       .WithMany(i => i.Claims) 
                       .HasForeignKey(e => e.claim_import_id)
-                      .OnDelete(DeleteBehavior.Restrict);
+                      .OnDelete(DeleteBehavior.Restrict);*/
             });
         }
     }

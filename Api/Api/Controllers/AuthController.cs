@@ -9,7 +9,6 @@ namespace Api.Controllers
 {
     //Controlador usuarios 
 
-    //Endpoint para registrar usuarios
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase

@@ -21,6 +21,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IClaimsService, ClaimsService>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -61,7 +62,6 @@ builder.Services.AddSwaggerGen(c =>
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
-// 2. Configurar el servicio de Autenticación
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
