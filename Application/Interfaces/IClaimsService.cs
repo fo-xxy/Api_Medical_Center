@@ -9,7 +9,7 @@ namespace Application.Interfaces
 {
     public interface IClaimsService
     {
-        Task<IEnumerable<ClaimsDto>> GetAllAsync();
+        Task<IEnumerable<ClaimResponseDto>> GetAllAsync();
         Task<ClaimResponseDto> RegisterAsync(ClaimsDto dto);
         Task<bool> UpdateAsync(int id, ClaimsDto dto);
         Task<bool> DeleteAsync(int id);

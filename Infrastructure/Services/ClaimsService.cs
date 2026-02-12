@@ -20,8 +20,8 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-
-        public async Task<IEnumerable<ClaimsDto>> GetAllAsync()
+        //Servicio para obtener todos los reclamos
+        public async Task<IEnumerable<ClaimResponseDto>> GetAllAsync()
         {
             return await _context.Claims
                            .Select(p => new ClaimResponseDto
@@ -38,11 +38,11 @@ namespace Infrastructure.Services
                            .ToListAsync();
         }
 
+        //Servicio para registrar un nuevo reclamo
         public async Task<ClaimResponseDto> RegisterAsync(ClaimsDto dto)
         {
             var claim = new Claims
             {
-
                 patient_id = dto.patient_id,
                 claim_number = dto.claim_number,
                 service_date = dto.service_date,
@@ -62,20 +62,39 @@ namespace Infrastructure.Services
             };
         }
 
-        public Task<bool> UpdateAsync(int id, ClaimsDto dto)
+        //Servicio para actualizar un reclamo
+        public async Task<bool> UpdateAsync(int id, ClaimsDto dto)
         {
-            throw new NotImplementedException();
+            var claim = await _context.Claims.FindAsync(id);
+
+            if(claim == null) return false;
+
+            claim.patient_id = dto.patient_id;
+            claim.claim_number = dto.claim_number;
+            claim.service_date = dto.service_date;
+            claim.amount = dto.amount;
+            claim.status = dto.status;
+            claim.updated_at = DateTime.UtcNow;
+
+            _context.Claims.Update(claim);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
         }
 
-        public Task<bool> DeleteAsync(int id)
+        //Servicio para eliminar un reclamo
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var claim = await _context.Claims.FindAsync(id);
+
+            if (claim == null) return false;
+
+            _context.Claims.Remove(claim);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
-
-       
-
-       
-
-       
     }
 }
