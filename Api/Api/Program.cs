@@ -23,6 +23,9 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 
+builder.Services.AddScoped<IClaimImportService, ClaimImportService>();
+
+builder.Services.AddScoped<IClaimExportService, ClaimExportService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.id);
-                entity.HasIndex(e => e.email).IsUnique(); 
+                entity.HasIndex(e => e.email).IsUnique();
             });
 
             //Parametrización para la entidad Patients
@@ -60,10 +60,11 @@ namespace Infrastructure.Persistence
                 entity.Property(e => e.amount).HasColumnType("decimal(18,2)");
 
                 //Relación con Importaciones
-               /* entity.HasOne(e => e.ClaimImport)
-                      .WithMany(i => i.Claims) 
+                entity.HasOne(e => e.ClaimImport)
+                      .WithMany(i => i.Claims)
                       .HasForeignKey(e => e.claim_import_id)
-                      .OnDelete(DeleteBehavior.Restrict);*/
+                      .IsRequired(false)
+                      .OnDelete(DeleteBehavior.SetNull);
             });
         }
     }
