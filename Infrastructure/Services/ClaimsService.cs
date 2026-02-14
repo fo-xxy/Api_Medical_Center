@@ -78,6 +78,7 @@ namespace Infrastructure.Services
         public async Task<ClaimResponseDto> RegisterAsync(ClaimsDto dto)
         {
             var claim = new Claims
+
             {
                 patient_id = dto.patient_id,
                 claim_number = dto.claim_number,
