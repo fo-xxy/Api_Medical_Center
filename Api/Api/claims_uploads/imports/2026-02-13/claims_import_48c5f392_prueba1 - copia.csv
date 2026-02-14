@@ -1,0 +1,3 @@
+patient_first_name;patient_last_name;patient_dob;claim_number;service_date;amount;status
+Rooo;Yarceee;15/04/1992;105;12/02/2026;5000000;pending
+mayo;Yarceee;15/04/1992;105;12/02/2026;1000000;pending

@@ -24,10 +24,27 @@ namespace Api.Controllers
             return Ok(new ApiResponse<IEnumerable<ClaimResponseDto>>(true, "Listado de reclamos obtenido con éxito", result));
         }
 
+        //Obtener lista de reclamos con nombre de usuario
+        [HttpGet("withNamePatient")]
+        public async Task<IActionResult> GetAllWithName()
+        {
+            var result = await _claimsService.GetAllWithNameAsync();
+            return Ok(new ApiResponse<IEnumerable<ClaimListResponseDto>>(true, "Listado de reclamos obtenido con éxito", result));
+        }
+
+        [HttpGet("HistoryImport")]
+        public async Task<IActionResult> GetAllHistory()
+        {
+            var result = await _claimsService.GetAllHistoryAsync();
+            return Ok(new ApiResponse<IEnumerable<ClaimListImportResponseDto>>(true, "Historial de importaciones", result));
+        }
+
         //Registrar un nuevo reclamo
         [HttpPost]
         public async Task<IActionResult> Register(ClaimsDto dto)
         {
+            var validStatuses = new[] { "paid", "pending", "denied" };
+
             if (dto == null)
             {
                 return BadRequest(new ApiResponse<string>(false, "El formato de los datos es inválido o faltan campos obligatorios."));
@@ -47,6 +64,12 @@ namespace Api.Controllers
 
             if (string.IsNullOrWhiteSpace(dto.status.ToString()))
                 return BadRequest(new ApiResponse<string>(false, "El status es obligatorio."));
+
+            if (!validStatuses.Contains(dto.status.ToString()))
+            {
+                return BadRequest(new ApiResponse<string>(false,
+                    $"Status inválido. Los valores permitidos son: {string.Join(", ", validStatuses)}"));
+            }
 
             if (dto.created_at == default)
                 return BadRequest(new ApiResponse<string>(false, "La fecha es obligatoría."));

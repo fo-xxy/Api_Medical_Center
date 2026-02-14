@@ -23,6 +23,23 @@ namespace Api.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
+            var validStatuses = new[] { "admin", "staff"};
+
+            if (string.IsNullOrWhiteSpace(dto.email))
+                return BadRequest(new ApiResponse<string>(false, "El correo electrónico es obligatorio."));
+
+            if (string.IsNullOrWhiteSpace(dto.password_digest))
+                return BadRequest(new ApiResponse<string>(false, "La contraseña es obligatorio."));
+
+            if (string.IsNullOrWhiteSpace(dto.role))
+                return BadRequest(new ApiResponse<string>(false, "El rol es obligatorio."));
+
+            if (!validStatuses.Contains(dto.role.ToString()))
+            {
+                return BadRequest(new ApiResponse<string>(false,
+                    $"Rol inválido. Los roles permitidos son: {string.Join(", ", validStatuses)}"));
+            }
+
             var result = await _authService.RegisterAsync(dto);
 
             if (!result)

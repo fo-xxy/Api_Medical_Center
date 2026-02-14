@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04
+    container_name: medical_sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Medical.2026!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+
+  api:
+    build: 
+      context: ./Api             
+      dockerfile: Dockerfile      
+    ports:
+      - "8080:5000"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=dbMedicalCenter;User Id=sa;Password=Medical.2026!;TrustServerCertificate=True;MultipleActiveResultSets=true

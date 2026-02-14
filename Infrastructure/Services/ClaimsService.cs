@@ -32,6 +32,42 @@ namespace Infrastructure.Services
                                service_date = p.service_date,
                                amount = p.amount,
                                status = p.status,
+                               created_at = p.created_at,
+
+                           })
+                           .OrderByDescending(p => p.created_at)
+                           .ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<ClaimListResponseDto>> GetAllWithNameAsync()
+        {
+            return await _context.Claims
+                           .Select(p => new ClaimListResponseDto
+                           {
+                               id = p.id,
+                               patient_id = p.patient_id,
+                               patient_name = p.Patient.first_name + " " + p.Patient.last_name,
+                               claim_number = p.claim_number,
+                               service_date = p.service_date,
+                               amount = p.amount,
+                               status = p.status,
+                               created_at = p.created_at,
+                               idImport = p.claim_import_id ?? 0
+                           })
+                           .OrderByDescending(p => p.created_at)
+                           .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClaimListImportResponseDto>> GetAllHistoryAsync()
+        {
+            return await _context.ClaimImports
+                           .Select(p => new ClaimListImportResponseDto
+                           {
+                               id = p.id,
+                               file_name = p.file_name,
+                               processed_records = p.processed_records,
+                               status = p.status,
                                created_at = p.created_at
                            })
                            .OrderByDescending(p => p.created_at)
@@ -49,8 +85,6 @@ namespace Infrastructure.Services
                 amount = dto.amount,
                 status = dto.status,
                 created_at = DateTime.UtcNow
-
-
             };
 
             _context.Claims.Add(claim);

@@ -20,5 +20,24 @@ namespace Application.DTOs
     public class ClaimResponseDto : ClaimsDto
     {
         public int id { get; set; }
+
+    }
+
+    public class ClaimListResponseDto : ClaimResponseDto
+    {
+        public string patient_name { get; set; }
+        public int idImport { get; set; }
+        
+        
+    }
+
+    public class ClaimListImportResponseDto 
+    {
+        public int id { get; set; }
+        public string file_name { get; set; }
+        public string total_records { get; set; }
+        public int processed_records { get; set; }
+        public string status { get; set; }
+        public DateTime created_at { get; set; }
     }
 }
